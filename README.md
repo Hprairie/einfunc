@@ -22,7 +22,7 @@ A convenient way of applying functions to tensors. `einfunc` is incredibly simil
 
 ## Installation
 
-`einfunc` requires torch >= 2.0 and python >= 3.10.
+`einfunc` requires torch >= 2.0 and python >= 3.11.
 
 ```console
 pip install einfunc
@@ -101,7 +101,9 @@ Comming Soon :)
 
 ## Planned Work <a name="planned-work"></a>
 
-Currently einfunc does support parenthesis and ellipses. I will be working on implementing this as soon as I can.
+Currently, einfunc does support parenthesis and ellipses. I will be working on implementing this as soon as I can.
+
+Also, I have only tested einfunc on python >= 3.11 and I need to work on implementation to previous version of python.
 
 ## Acknowledgements
 
