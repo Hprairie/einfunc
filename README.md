@@ -87,6 +87,8 @@ $$ Min(x_{i,j} - y_{k, i}, \quad dim=i) $$
 result = einfunc(x, y, 'i j, k i -> j k', lambda a b : a - b, reduce='min')
 ```
 
+One thing to note is that if `reduce` is not passed then 'sum' is assumed by einfunc.
+
 ## Why you shouldn't use einfunc <a name="why-not-use"></a>
 
 Einfunc is just a convenient way of interfacing with PyTorch and Torchdim. This creates some overhead when operating on tensors, compared to vanilla operations and torchdim operations. This means that it will be must faster to use vanilla pytorch operations if doing a simple operation, or just use torchdim if trying to do something more complex.
