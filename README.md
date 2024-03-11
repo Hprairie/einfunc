@@ -7,7 +7,7 @@
 
 A convenient way of applying functions to tensors. `einfunc` is incredibly similar to `einsum`, but with one key difference. The ability to apply your own custom function instead of multiplication. `einfunc` also allows for the ability to choose how reductions occur within the operation.
 
-`einfunc` is a simple interface, which utilizes Pytorch's [torchdim](https://github.com/facebookresearch/torchdim). I highly recommend checking out torchdim as it is by far the best way to do readable tensor operations in pytorch. `einfunc` is just a convenient way of tapping into `torchdim` with a function similar to `einsum`.
+`einfunc` is a simple interface, which utilizes Pytorch's [torchdim](https://github.com/facebookresearch/torchdim). I highly recommend checking out torchdim as it is by far the best way to do readable tensor operations in pytorch. `einfunc` is just a convenient way of tapping into torchdim with a function similar to `einsum`.
 
 **Table of Contents**
 
@@ -91,7 +91,7 @@ One thing to note is that if `reduce` is not passed then 'sum' is assumed by ein
 
 ## Why you shouldn't use einfunc <a name="why-not-use"></a>
 
-Einfunc is just a convenient way of interfacing with PyTorch and Torchdim. This creates some overhead when operating on tensors, compared to vanilla operations and torchdim operations. This means that it will be must faster to use vanilla pytorch operations if doing a simple operation, or just use torchdim if trying to do something more complex.
+Einfunc is just a convenient way of interfacing with PyTorch and Torchdim. This creates some overhead when operating on tensors, compared to vanilla operations and torchdim operations. This means that it will be much faster to use vanilla pytorch operations if doing a simple operation, or just use torchdim if trying to do something more complex.
 
 ## Why you should use einfunc <a name="why-yes-use"></a>
 
