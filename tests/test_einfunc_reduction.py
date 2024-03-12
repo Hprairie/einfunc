@@ -116,19 +116,18 @@ def test_shape():
             einsum_result = einsum(equation2, *in_tensors)
 
             if dimension_reduction is not None:
-                match reduction:
-                    case "prod":
-                        # pytorch supports reducing only one operation at a time
-                        for i in list(sorted(dimension_reduction))[::-1]:
-                            einsum_result = einsum_result.prod(i)
-                    case "sum":
-                        einsum_result = einsum_result.sum(dimension_reduction)
-                    case "max":
-                        einsum_result = einsum_result.amax(dimension_reduction)
-                    case "min":
-                        einsum_result = einsum_result.amin(dimension_reduction)
-                    case "mean":
-                        einsum_result = einsum_result.mean(dimension_reduction)
+                if reduction == "prod":
+                    # pytorch supports reducing only one operation at a time
+                    for i in list(sorted(dimension_reduction))[::-1]:
+                        einsum_result = einsum_result.prod(i)
+                elif reduction == "sum":
+                    einsum_result = einsum_result.sum(dimension_reduction)
+                elif reduction == "max":
+                    einsum_result = einsum_result.amax(dimension_reduction)
+                elif reduction == "min":
+                    einsum_result = einsum_result.amin(dimension_reduction)
+                elif reduction == "mean":
+                    einsum_result = einsum_result.mean(dimension_reduction)
 
             assert einfunc_result.shape == einsum_result.shape
 

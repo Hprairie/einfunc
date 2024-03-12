@@ -48,22 +48,21 @@ def _parse_pattern(pattern: str, pass_axis: bool):
 
 def _collapse_function(tensor: torch.Tensor, collapse: str, axis):
     """#Collapses the tensor along the given axis"""
-    match collapse:
-        case "min":
-            return tensor.amin(axis)
-        case "max":
-            return tensor.amax(axis)
-        case "sum":
-            return tensor.sum(axis)
-        case "prod":
-            # pytorch supports reducing only one operation at a time
-            for i in axis[::-1]:
-                tensor = tensor.prod(i)
-            return tensor
-        case "mean":
-            return tensor.mean(axis)
-        case default:
-            raise NotImplementedError(f"Unknown reduction {default} passed to einfunc")
+    if collapse == "min":
+        return tensor.amin(axis)
+    if collapse == "max":
+        return tensor.amax(axis)
+    if collapse == "sum":
+        return tensor.sum(axis)
+    if collapse == "prod":
+        # pytorch supports reducing only one operation at a time
+        for i in axis[::-1]:
+            tensor = tensor.prod(i)
+        return tensor
+    if collapse == "mean":
+        return tensor.mean(axis)
+
+    raise NotImplementedError(f"Unknown reduction {collapse} passed to einfunc")
 
 
 def einfunc(
@@ -124,7 +123,7 @@ def einfunc(
 
     # Apply tensor axis
     for i in range(len(tensors)):
-        tensors[i] = tensors[i][*tensor_axis[i]]
+        tensors[i] = tensors[i][tensor_axis[i]]
 
     # Pass to function (just pass, it should work lol)
     if pass_axis and axis is not None:
