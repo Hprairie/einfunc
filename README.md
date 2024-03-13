@@ -14,7 +14,7 @@ A convenient way of applying functions to tensors. `einfunc` is incredibly simil
 - [Installation](#installation)
 - [API](#api)
 - [Why you shouldn't use einfunc](#why-not-use)
-- [Why you should use einfund](#why-yes-use)
+- [Why you should use einfunc](#why-yes-use)
 - [Additional Examples](#additional-examples)
 - [Planned Work](#planned-work)
 - [Acknowledgements](#acknowledgements)
@@ -99,13 +99,11 @@ It's convenient and slightly more readable than torchdim IMO. Understanding exac
 
 ## Additional Examples <a name="additional-examples"></a>
 
-Comming Soon :)
+Coming Soon :)
 
 ## Planned Work <a name="planned-work"></a>
 
 Currently, einfunc does support parenthesis and ellipses. I will be working on implementing this as soon as I can.
-
-Also, I have only tested einfunc on python >= 3.11 and I need to work on implementation to previous version of python.
 
 ## Acknowledgements
 
