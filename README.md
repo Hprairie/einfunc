@@ -53,7 +53,7 @@ Currently, einfunc supports 5 different types of reduction.
 $$ \frac{1}{I} \sum_i^I x_{i,j} - y_{k, i} $$
 
 ```python
-result = einfunc(x, y, 'i j, k i -> j k', lambda a b : a - b, reduce='mean')
+result = einfunc(x, y, 'i j, k i -> j k', lambda a, b : a - b, reduce='mean')
 ```
   
 - Sum
@@ -61,7 +61,7 @@ result = einfunc(x, y, 'i j, k i -> j k', lambda a b : a - b, reduce='mean')
 $$ \sum_i^I x_{i,j} - y_{k, i} $$
 
 ```python
-result = einfunc(x, y, 'i j, k i -> j k', lambda a b : a - b, reduce='sum')
+result = einfunc(x, y, 'i j, k i -> j k', lambda a, b : a - b, reduce='sum')
 ```
   
 - Prod
@@ -69,7 +69,7 @@ result = einfunc(x, y, 'i j, k i -> j k', lambda a b : a - b, reduce='sum')
 $$ \prod_i^I x_{i,j} - y_{k, i} $$
 
 ```python
-result = einfunc(x, y, 'i j, k i -> j k', lambda a b : a - b, reduce='prod')
+result = einfunc(x, y, 'i j, k i -> j k', lambda a, b : a - b, reduce='prod')
 ```
 
 - Max
@@ -77,14 +77,14 @@ result = einfunc(x, y, 'i j, k i -> j k', lambda a b : a - b, reduce='prod')
 $$ Max(x_{i,j} - y_{k, i}, \quad dim=i) $$
 
 ```python
-result = einfunc(x, y, 'i j, k i -> j k', lambda a b : a - b, reduce='max')
+result = einfunc(x, y, 'i j, k i -> j k', lambda a, b : a - b, reduce='max')
 ```
 - Min
 
 $$ Min(x_{i,j} - y_{k, i}, \quad dim=i) $$
 
 ```python
-result = einfunc(x, y, 'i j, k i -> j k', lambda a b : a - b, reduce='min')
+result = einfunc(x, y, 'i j, k i -> j k', lambda a, b : a - b, reduce='min')
 ```
 
 One thing to note is that if `reduce` is not passed then 'sum' is assumed by einfunc.
