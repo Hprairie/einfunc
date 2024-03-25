@@ -9,37 +9,23 @@ from functorch.dim import dims
 @lru_cache(maxsize=126)
 def _parse_pattern(pattern: str, pass_axis: bool):
     """Parses the pattern of the einstein notation for a tensor operation"""
-
     if "->" not in pattern:
         raise ValueError("einstein pattern must contain ->")
-
-    left_str, right_str = pattern.split("->")
+    input_str, output_str = pattern.split("->")
 
     # Determine total number of axis and tensor dim map
-    total_axis = set()
-    tensor_dim = []
-    for tensor_axis in left_str.split(","):
-        tensor_axis = tensor_axis.split()
-        total_axis = total_axis | set(tensor_axis)
-        tensor_dim.append(tensor_axis)
-
-    # Create axis and then map dim to axis
-    axis = dims(len(total_axis))
-
-    # Ensure axis is a list
+    inputs = [input.split() for input in input_str.split(",")]
+    dim = set.union(*map(set, inputs))
+    axis = dims(len(dim))
     if not isinstance(axis, tuple):
         axis = (axis,)
+    dim2axis = dict(zip(dim, axis))
 
-    dim2axis = dict(zip(total_axis, axis))
-
-    # Create tensor_axis
-    tensor_axis = list(map(lambda x: [dim2axis[dim] for dim in x], tensor_dim))
-
-    # Determine axis to collapse and final shape of tensor
-    right_axises = right_str.split()
-    collapse_axis = total_axis - set(right_axises)
-    collapse_axis = [dim2axis[x] for x in collapse_axis]
-    final_shape = [dim2axis[dim] for dim in right_axises]
+    tensor_axis = [[dim2axis[d] for d in exp] for exp in inputs]
+    output_axis = [output.split() for output in output_str.split(",")]
+    collapse_axis = [list(dim - set(output)) for output in output_axis]
+    collapse_axis = [[dim2axis[x] for x in exp] for exp in collapse_axis]
+    final_shape = [[dim2axis[x] for x in exp] for exp in output_axis]
 
     if pass_axis:
         return tensor_axis, collapse_axis, final_shape, axis
@@ -48,6 +34,8 @@ def _parse_pattern(pattern: str, pass_axis: bool):
 
 def _collapse_function(tensor: torch.Tensor, collapse: str, axis):
     """#Collapses the tensor along the given axis"""
+    if len(axis) == 0:
+        return tensor
     if collapse == "min":
         return tensor.amin(axis)
     if collapse == "max":
@@ -131,11 +119,20 @@ def einfunc(
     else:
         final_tensor = function(*tensors)
 
-    # apply the mode of collapse
-    if len(collapse_axis):
-        final_tensor = _collapse_function(final_tensor, collapse, collapse_axis)
+    if isinstance(final_tensor, tuple):
+        final_tensor = list(final_tensor)
+    else:
+        final_tensor = [final_tensor]
 
-    # Unbind dimension and return
-    if len(final_shape):
-        return final_tensor.order(*final_shape)
-    return final_tensor
+    # apply the mode of collapse
+    print(final_tensor, collapse_axis, final_shape)
+    ret = [
+        (
+            _collapse_function(tensor, collapse, caxis).order(*final)
+            if len(final)
+            else _collapse_function(tensor, collapse, caxis)
+        )
+        for tensor, caxis, final in zip(final_tensor, collapse_axis, final_shape)
+    ]
+    print(pattern, final_tensor, collapse_axis, final_shape)
+    return ret if len(ret) != 1 else ret[0]
