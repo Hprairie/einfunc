@@ -6,7 +6,7 @@ import torch
 from functorch.dim import dims
 
 
-@lru_cache(maxsize=126)
+#@lru_cache(maxsize=126)
 def _parse_pattern(pattern: str, pass_axis: bool):
     """Parses the pattern of the einstein notation for a tensor operation"""
     if "->" not in pattern:
