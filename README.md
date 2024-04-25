@@ -22,7 +22,7 @@ A convenient way of applying functions to tensors. `einfunc` is incredibly simil
 
 ## Installation
 
-`einfunc` requires torch >= 2.0 and python >= 3.11.
+`einfunc` requires torch >= 2.0 and python >= 3.8.
 
 ```console
 pip install einfunc
